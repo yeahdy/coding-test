@@ -1,42 +1,64 @@
 import java.util.*;
+import java.io.*;
 
 class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        TreeMap<Integer, TreeSet<Integer>> map = new TreeMap<>();
+    static TreeMap<Integer, TreeSet<Integer>> workbook = new TreeMap<>();  //<난이도,문제번호>
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        int n = scanner.nextInt();
-        for (int i = 0; i < n; i++) {
-            int id = scanner.nextInt();
-            int difficulty = scanner.nextInt();
-            map.computeIfAbsent(difficulty, k -> new TreeSet<>()).add(id);
+        int N = Integer.parseInt(br.readLine());
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            int number = Integer.parseInt(st.nextToken());
+            int difficulty = Integer.parseInt(st.nextToken());
+            workbook.computeIfAbsent(difficulty, set -> new TreeSet<>())
+                    .add(number);
         }
 
-        while (scanner.hasNext()) {
-            String command = scanner.next();
-            if (command.equals("add")) {
-                int id = scanner.nextInt();
-                int difficulty = scanner.nextInt();
-                map.computeIfAbsent(difficulty, k -> new TreeSet<>()).add(id);
-            } else if (command.equals("solved")) {
-                int id = scanner.nextInt();
-                for (TreeSet<Integer> ids : map.values()) {
-                    if (ids.remove(id)) {
-                        if (ids.isEmpty()) {
-                            map.values().remove(ids);
-                        }
-                        break;
-                    }
-                }
-            } else if (command.equals("recommend")) {
-                int x = scanner.nextInt();
-                if (x == 1) {
-                    System.out.println(map.lastEntry().getValue().last());
-                } else {
-                    System.out.println(map.firstEntry().getValue().first());
-                }
+        int M = Integer.parseInt(br.readLine());
+        while (M-- > 0) {
+            st = new StringTokenizer(br.readLine());
+            String say = st.nextToken();
+            switch (say) {
+                case "recommend":
+                    recommend(Integer.parseInt(st.nextToken()));
+                    break;
+                case "add":
+                    add(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+                    break;
+                case "solved":
+                    solved(Integer.parseInt(st.nextToken()));
+                    break;
             }
         }
-        scanner.close();
+
+        br.close();
+    }
+
+    static void recommend(int difficulty) {
+        if (difficulty == 1) {
+            System.out.println(workbook.lastEntry().getValue().last());
+        } else {
+            System.out.println(workbook.firstEntry().getValue().first());
+        }
+    }
+
+    static void add(int number, int difficulty) {
+        workbook.computeIfAbsent(difficulty, set -> new TreeSet<>())
+                .add(number);
+    }
+
+    static void solved(int number) {
+        Iterator<Map.Entry<Integer, TreeSet<Integer>>> iterator = workbook.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, TreeSet<Integer>> entry = iterator.next();
+            if (entry.getValue().remove(number)) {
+                if (entry.getValue().isEmpty()) {
+                    iterator.remove();
+                }
+                return;
+            }
+        }
     }
 }

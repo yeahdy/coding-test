@@ -21,11 +21,11 @@ public class Main {
         int length = 0;
         for(int start : map.keySet()){
             int end = map.get(start);
-            //System.out.printf("start:%d, end:%d\n",start,end);
-
+            //이미 널판지를 설치했을 경우
             if(end < length){
                 continue;
             }
+            //널판지가 겹쳐있을 경우
             if(length < start){
                 length = start;
             }
@@ -36,7 +36,7 @@ public class Main {
 
             if(reminder != 0){
                 result++;
-                length += L - reminder;
+                length += L - reminder; //여분 널판지를 보충한 만큼 길이 추가
             }
         }
         System.out.println(result);

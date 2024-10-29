@@ -1,0 +1,44 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int L = Integer.parseInt(st.nextToken());
+
+        TreeMap<Integer,Integer> map = new TreeMap<>();
+        for(int i=0; i<N; i++){
+            st = new StringTokenizer(br.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+
+            map.put(start,Math.max(map.getOrDefault(start,0),end));
+        }
+
+        int result = 0;
+        int length = 0;
+        for(int start : map.keySet()){
+            int end = map.get(start);
+            //System.out.printf("start:%d, end:%d\n",start,end);
+
+            if(end < length){
+                continue;
+            }
+            if(length < start){
+                length = start;
+            }
+
+            result += (end- length)/L;  //필수 널판지길이
+            int reminder = (end- length)%L; //여분 널판지 길이
+            length = end;
+
+            if(reminder != 0){
+                result++;
+                length += L - reminder;
+            }
+        }
+        System.out.println(result);
+    }
+}

@@ -20,20 +20,19 @@ WITH PURCHASED_DATA AS (
         GROUP BY YEAR, MONTH, os.USER_ID
     ) PURCHASE_USER 
     GROUP BY YEAR,MONTH
+),
+TOTAL_USER AS (
+    SELECT USER_ID
+    FROM USER_INFO 
+    WHERE YEAR(JOINED) = '2021'
+    GROUP BY USER_ID
 )
 SELECT
     pd.YEAR,
     pd.MONTH,
     pd.PURCHASED_USERS,
     ROUND(
-    pd.PURCHASED_USERS/ (SELECT COUNT(USER_ID) 
-                            FROM (
-                                SELECT USER_ID
-                                FROM USER_INFO 
-                                WHERE YEAR(JOINED) = '2021'
-                                GROUP BY USER_ID
-                            )sub) 
-        ,1) PUCHASED_RATIO
+    pd.PURCHASED_USERS/ (SELECT COUNT(USER_ID) FROM TOTAL_USER),1) PUCHASED_RATIO
 FROM PURCHASED_DATA pd;
 
 # SELECT COUNT(USER_ID)
@@ -43,18 +42,3 @@ FROM PURCHASED_DATA pd;
 #     WHERE YEAR(JOINED) = '2021'
 #     GROUP BY USER_ID
 # )sub;
-
-
-# SELECT 
-#     # YEAR(os.SALES_DATE) YEAR,
-#     # MONTH(os.SALES_DATE) MONTH,
-#     os.USER_ID,
-#     COUNT(os.USER_ID) PURCHASED_USERS
-#     # ROUND(COUNT(DISTINCT os.USER_ID)/COUNT(DISTINCT ui.USER_ID),1) PUCHASED_RATIO
-# FROM USER_INFO ui
-# JOIN ONLINE_SALE os
-# ON ui.USER_ID = os.USER_ID
-# WHERE YEAR(ui.JOINED) = '2021'
-# GROUP BY os.USER_ID
-# GROUP BY YEAR(os.SALES_DATE), MONTH(os.SALES_DATE),os.USER_ID
-

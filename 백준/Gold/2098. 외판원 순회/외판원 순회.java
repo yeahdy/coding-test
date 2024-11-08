@@ -5,7 +5,7 @@ public class Main {
     static int N;
     static int[][] route;
     static int[][] dp;
-    static final int INF = 100000000;
+    static final int INF = 16_000_001;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

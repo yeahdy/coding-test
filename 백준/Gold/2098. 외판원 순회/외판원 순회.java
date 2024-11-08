@@ -50,6 +50,6 @@ public class Main {
 
     //다음에 이동할 도시를 이미 순회했고, 도시 i에서 도시 j로 갈 수 없는 경우
     private static boolean stop (int visited, int now, int next){
-        return (visited & (1<<next)) > 0 || route[now][next] == 0;
+        return route[now][next] == 0 || (visited & (1<<next)) > 0;
     }
 }

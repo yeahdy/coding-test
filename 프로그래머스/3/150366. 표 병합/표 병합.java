@@ -3,7 +3,6 @@ import java.util.*;
 
 //1 ≤ commands의 길이 ≤ 1,000
 //r, c는 1~50 사이의 정수 (최대 2500)
-
 class Solution {
     static final int MAX = 50*50;
     static String[] table = new String[MAX+1];
@@ -15,7 +14,6 @@ class Solution {
         for(int i=0; i<MAX; i++){
             parents[i] = i;
         }
-        Arrays.fill(table,"");
 
         for(String command : commands){
             StringTokenizer st = new StringTokenizer(command);
@@ -94,7 +92,7 @@ class Solution {
         for(int i=0; i<table.length; i++){
             if(parents[i] == parent){
                 parents[i] = i;     //부모에서 벗어나기
-                table[i] = "";    //병합 해제 후 셀 초기화
+                table[i] = null;    //병합 해제 후 셀 초기화
             }
         }
         table[index] = value;
@@ -103,7 +101,7 @@ class Solution {
     //PRINT r c
     public void print(int r, int c){
         int parent = find(getIndex(r, c));
-        String result = table[parent].isBlank()? "EMPTY" : table[parent];
+        String result = Objects.isNull(table[parent])? "EMPTY" : table[parent];
         prints.add(result);
     }
 
@@ -124,9 +122,9 @@ class Solution {
             return;
         }
 
-        table[num1] = table[num1].isBlank()? table[num2] : table[num1];
+        table[num1] = Objects.isNull(table[num1])? table[num2] : table[num1];
         parents[num2] = num1;
-        table[num2] = "";
+        table[num2] = null;
     }
 
     private int getIndex(int r, int c){

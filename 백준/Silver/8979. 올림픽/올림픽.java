@@ -56,23 +56,22 @@ public class Main {
             return rank;
         }
 
-
+        int same = 0;
         while(!pq.isEmpty()){
-            int same = 0;
             Nation nation = pq.poll();
             //동점일 경우
             if(prev.gold == nation.gold && prev.silver == nation.silver && prev.bronze == nation.bronze){
                 same++;
             }else {
                 rank++;
+                rank += same;
+                same = 0;
             }
 
             if(nation.name == K){
                 break;
             }
-
             prev = nation;
-            rank += same;
         }
         return rank;
     }

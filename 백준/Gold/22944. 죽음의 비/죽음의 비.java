@@ -34,7 +34,6 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int h = Integer.parseInt(st.nextToken());
         int d = Integer.parseInt(st.nextToken());
-        int umbrellaCount = 0;
         space = new char[n][n];
 
         for(int i=0; i<n; i++){
@@ -42,13 +41,11 @@ public class Main {
             for(int j=0; j<n; j++){
                 if(S == data.charAt(j)){
                     current = new int[] {i,j};
-                }else if(U == data.charAt(j)){
-                    umbrellaCount++;
                 }
                 space[i][j] = data.charAt(j);
             }
         }
-        visited = new boolean[n][n][umbrellaCount+1];
+        visited = new boolean[n][n][n];
 
         System.out.println(bfs(h,d));
     }
@@ -58,7 +55,6 @@ public class Main {
     static int[] ny = {0,1,0,-1};
     static int bfs(int h, int d) {
         Deque<Pos> deque = new ArrayDeque<>();
-        int uc = 0;
         deque.offer(new Pos(current[0],current[1],h,0,0,0));
         visited[current[0]][current[1]][0] = true;
 
@@ -82,7 +78,7 @@ public class Main {
                 //우산획득 시 내구도 감소+우산갯수 카운팅, 아니면 죽음비 맞기
                 if(current == U){
                     umbrella = d-1;
-                    pos.umbrellaCount = ++uc;
+                    pos.umbrellaCount++;
                     space[x][y] = '.';
                 }else{
                     if(umbrella > 0){

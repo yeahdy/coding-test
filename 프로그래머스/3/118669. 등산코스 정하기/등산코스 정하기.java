@@ -18,8 +18,7 @@ class Solution {
 
     List<ArrayList<Node>> graph = new ArrayList<>();
     int[] table;
-    Set<Integer> gateSet = new HashSet<>();
-    Set<Integer> summitSet = new HashSet<>();
+    List<Integer> summitSet = new ArrayList<>();
     public int[] solution(int n, int[][] paths, int[] gates, int[] summits) {
         //산봉우리 중복제거
         for(int mountain : summits){
@@ -40,7 +39,7 @@ class Solution {
             graph.get(from).add(new Node(to, distance));
         }
 
-        dijkstra(gates,summits);
+        dijkstra(gates);
 
         int[] answer = {0,Integer.MAX_VALUE};
         for (int mountain : summits) {
@@ -57,7 +56,7 @@ class Solution {
 
     // 휴식 없이 이동해야 하는 시간 중 가장 긴 시간을 해당 등산코스의 intensity (가중치)
     // 출입구는 처음과 끝에 한 번씩, 산봉우리는 한 번만 포함 -> 출발 > 산봉우리 까지의 거리
-    void dijkstra(int[] gates, int[] summits){
+    void dijkstra(int[] gates){
         PriorityQueue<Node> pq = new PriorityQueue<>();
         //출발지점으로 초기화
         for (int gate : gates) {
